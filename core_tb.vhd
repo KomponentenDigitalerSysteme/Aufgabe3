@@ -1,6 +1,7 @@
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
 ENTITY core_tb IS
    -- empty
@@ -88,7 +89,7 @@ BEGIN
          END LOOP;
          sw <= (OTHERS => '0');
          verhalten.cnt <= cnt;
-         ASSERT res=test(i).res REPORT "wrong result" SEVERITY error;
+         ASSERT res=test(i).res REPORT "wrong result" SEVERITY error;--& integer'image(to_integer(signed(res))) SEVERITY error;
       END PROCEDURE;
 
    BEGIN
