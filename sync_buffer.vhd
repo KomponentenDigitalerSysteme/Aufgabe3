@@ -21,7 +21,7 @@ END sync_buffer;
 --
 ARCHITECTURE structure OF sync_buffer IS
     
-    constant N_hysterese: natural := 32; -- 46???
+    constant N_hysterese: natural := 32;
     
     
     --signal clk_hysterese: std_logic;
@@ -29,8 +29,11 @@ ARCHITECTURE structure OF sync_buffer IS
     signal f1 : std_logic;
 	 signal f2 : std_logic;
 	 
-	 signal state : std_logic;
+	 --gnal state : std_logic;
 	 signal f3 : boolean;
+	 
+	 type TState is (S0, S1);
+	 signal state : TState;
 	 
 BEGIN
 	
@@ -38,7 +41,8 @@ BEGIN
 	
    process(rst, clk) begin
 		if rst = RSTDEF then
-			state <= '0';
+			--state <= '0';
+			state <= S0;
 			cnt_hysterese <= 0;
 			fedge <= '0';
 			redge <= '0';
@@ -50,13 +54,8 @@ BEGIN
 			end if;
 			
 			if en = '1' then
-				--redge <= '0';
-				--fedge <= '0';
-				
-				if state = '0' then
-					--if din = '0' and cnt_hysterese = '0' then
-						--cnt_hysterese = cnt_hysterese;
-					--end if;
+				case state is 
+				when S0 =>
 					if f2 = '0' then
 						if cnt_hysterese > 0 then
 							cnt_hysterese <= cnt_hysterese - 1;
@@ -66,18 +65,12 @@ BEGIN
 							cnt_hysterese <= cnt_hysterese + 1;
 						end if;
 						if cnt_hysterese = N_hysterese - 1 then
-							state <= '1';
+							state <= S1;
 							redge <= '1';
 						end if;
 					end if;
-					--dout <= state;
-					
-				else -- state = '1'
-					
+				when S1 =>
 					if f2 = '1' then
-						--if cnt_hysterese = N_hysterese - 1 then
-							--cnt_hysterese = cnt_hysterese;
-						--end if;
 						if f3 then
 							cnt_hysterese <= cnt_hysterese + 1;
 						end if;
@@ -86,12 +79,11 @@ BEGIN
 							cnt_hysterese <= cnt_hysterese - 1;
 						end if;
 						if cnt_hysterese = 0 then
-							state <= '0';
+							state <= S0;
 							fedge <= '1';
 						end if;
 					end if;
-				--dout <= state;
-				end if;
+				end case;
 			end if;
 		end if;
    end process;
