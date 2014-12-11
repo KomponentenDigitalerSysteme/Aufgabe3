@@ -24,7 +24,7 @@ architecture structure of core is
 	signal acc_en : std_logic := '0';
    signal sum : signed(43 DOWNTO 0);
    
-	-- RAM
+	-- RAM--
 	signal ram_en : std_logic := '0';
 	signal addr_a : std_logic_vector(9 DOWNTO 0);
 	signal addr_b : std_logic_vector(9 DOWNTO 0);
