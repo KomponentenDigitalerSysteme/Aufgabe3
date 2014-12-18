@@ -144,7 +144,7 @@ begin
 						done <= '0';
 					end if;
 				when S1 =>
-					if addr_a > "0000000000" then
+					if addr_a(7 DOWNTO 0) > "00000000" then
 						state <= S2;
 						ram_en <= '1';
 						addr_a <= std_logic_vector(signed(addr_a) - 1);
@@ -152,7 +152,7 @@ begin
 						state <= S5;
 					end if;
 				when S2 =>
-					if addr_a > "0000000000" then
+					if addr_a(7 DOWNTO 0) > "00000000" then
 						state <= S3;
 						mul_en <= '1';
 						addr_a <= std_logic_vector(signed(addr_a) - 1);
@@ -162,7 +162,7 @@ begin
 						mul_en <= '1';
 					end if;
 				when S3 =>
-					if addr_a > "0000000000" then
+					if addr_a(7 DOWNTO 0) > "00000000" then
 						addr_a <= std_logic_vector(signed(addr_a) - 1);
 						acc_en <= '1';
 					else
